@@ -1,22 +1,22 @@
 # RAG Document API
 
-API REST para gestión de documentos con búsqueda semántica, construida con FastAPI y desplegada en Google Cloud Run.
+REST API for document management with semantic search, built with FastAPI and deployed on Google Cloud Run.
 
-## Descripción
+## Description
 
-RAG Document API permite almacenar documentos y realizar búsquedas semánticas sobre su contenido. Construida con Clean Architecture y principios SOLID.
+RAG Document API allows storing documents and performing semantic searches on their content. Built with Clean Architecture and SOLID principles.
+
+## Live Demo
+
+**Swagger UI:** https://rag-document-api-247946064488.us-central1.run.app/docs
 
 ## Endpoints
 
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| POST | `/documents/` | Crear un nuevo documento |
-| GET | `/search/?q=texto` | Búsqueda semántica de documentos |
-| GET | `/health` | Estado del servicio |
-
-## Demo en producción
-
-**Swagger UI:** https://rag-document-api-247946064488.us-central1.run.app/docs
+| Method | Route | Description |
+|--------|-------|-------------|
+| POST | `/documents/` | Create a new document |
+| GET | `/search/?q=text` | Semantic search over documents |
+| GET | `/health` | Service health check |
 
 ## Stack
 
@@ -24,21 +24,22 @@ RAG Document API permite almacenar documentos y realizar búsquedas semánticas 
 - FastAPI
 - Google Cloud Run
 - Clean Architecture
+- Semantic Search
 
-## Uso
+## Usage
 
-### Crear un documento
+### Create a document
 ```bash
 curl -X POST https://rag-document-api-247946064488.us-central1.run.app/documents/ \
   -H "Content-Type: application/json" \
-  -d '{"title": "Mi documento", "content": "Contenido del documento"}'
+  -d '{"title": "My document", "content": "Document content here"}'
 ```
 
-### Buscar documentos
+### Search documents
 ```bash
-curl "https://rag-document-api-247946064488.us-central1.run.app/search/?q=contenido"
+curl "https://rag-document-api-247946064488.us-central1.run.app/search/?q=content"
 ```
 
-## Desarrollado por
+## Built by
 
-Edisson A.G.C. — Ingeniería IA Aplicada al Comercio
+Edisson A.G.C. — AI Engineering Applied to Commerce
