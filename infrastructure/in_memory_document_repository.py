@@ -16,10 +16,9 @@ Version: 1.0.0
 """
 
 import logging
+import uuid
 from typing import Dict, List, Optional
 
-# Se asume que estas dependencias existen en la capa Core y seran implementadas en otras submisiones.
-# No se implementan aqui.
 from core.document import Document
 from core.exceptions import DocumentNotFoundException, RepositoryException
 from core.ports.document_repository import DocumentRepository
@@ -56,9 +55,14 @@ class InMemoryDocumentRepository(DocumentRepository):
             if not isinstance(document, Document) or not hasattr(document, 'id'):
                 raise TypeError("Provided object is not a valid Document instance.")
 
+            # 🔥 FIX CRÍTICO: garantizar ID siempre
+            if not getattr(document, "id", None):
+                document.id = str(uuid.uuid4())
+
             logger.debug(f"Adding document with id: {document.id}")
             self._documents[document.id] = document
             logger.info(f"Document with id '{document.id}' added successfully.")
+
         except TypeError as e:
             logger.error(f"Error adding document: Invalid object type. Details: {e}")
             raise RepositoryException(f"Failed to add invalid document object: {e}") from e
@@ -110,13 +114,6 @@ class InMemoryDocumentRepository(DocumentRepository):
     def update(self, document: Document) -> None:
         """
         Actualiza un documento existente en el almacen.
-
-        Args:
-            document: La instancia del documento con los datos actualizados.
-
-        Raises:
-            DocumentNotFoundException: Si el documento a actualizar no existe en el almacen.
-            RepositoryException: Si ocurre un error inesperado durante la actualizacion.
         """
         try:
             if document.id not in self._documents:
@@ -125,6 +122,7 @@ class InMemoryDocumentRepository(DocumentRepository):
             logger.debug(f"Updating document with id: {document.id}")
             self._documents[document.id] = document
             logger.info(f"Document with id '{document.id}' updated successfully.")
+
         except DocumentNotFoundException:
             logger.warning(f"Attempted to update a document that does not exist: id '{document.id}'")
             raise
@@ -135,17 +133,12 @@ class InMemoryDocumentRepository(DocumentRepository):
     def delete(self, document_id: str) -> None:
         """
         Elimina un documento del almacen por su ID.
-
-        Args:
-            document_id: El ID del documento a eliminar.
-
-        Raises:
-            DocumentNotFoundException: Si no se encuentra ningun documento con el ID especificado.
         """
         try:
             logger.debug(f"Attempting to delete document with id: {document_id}")
             del self._documents[document_id]
             logger.info(f"Document with id '{document_id}' deleted successfully.")
+
         except KeyError:
             logger.warning(f"Attempted to delete a document that does not exist: id '{document_id}'")
             raise DocumentNotFoundException(f"Document with id '{document_id}' not found for deletion.")
