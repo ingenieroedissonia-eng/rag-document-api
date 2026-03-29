@@ -55,9 +55,6 @@ class InMemoryDocumentRepository(DocumentRepository):
             if not isinstance(document, Document) or not hasattr(document, 'id'):
                 raise TypeError("Provided object is not a valid Document instance.")
 
-            # 🔥 FIX CRÍTICO: garantizar ID siempre
-            if not getattr(document, "id", None):
-                document.id = str(uuid.uuid4())
 
             logger.debug(f"Adding document with id: {document.id}")
             self._documents[document.id] = document

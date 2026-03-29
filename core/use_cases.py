@@ -95,13 +95,13 @@ class AddDocument:
 
         try:
             new_document = Document(
-                id=None,
                 title=request.title.strip(),
                 content=request.content.strip()
             )
 
             logger.debug("Attempting to save new document via repository.")
-            created_document = self.document_repository.save(new_document)
+            self.document_repository.add(new_document)
+            created_document = new_document
 
             if not created_document or not created_document.id:
                 raise DocumentRepositoryError(
